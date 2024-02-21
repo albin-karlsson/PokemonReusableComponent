@@ -1,0 +1,45 @@
+﻿<h3>Pokemon</h3>
+
+@if(currentName != null && currentButtonText != null)
+{
+    <h1>@currentName</h1>
+    <button @onclick="Evolve">@currentButtonText</button>  
+}
+
+@code {
+    private string? currentName;
+    private string? currentButtonText;
+
+    [Parameter]
+    public List<string>? Names { get; set; }
+    [Parameter]
+    public List<string>? ButtonTexts { get; set; }
+
+    private void Evolve()
+    {
+        int currentIndex = Names.IndexOf(currentName);
+
+        if (currentIndex + 1 < Names.Count())
+        {
+            currentName = Names[currentIndex + 1];
+
+            if (currentIndex + 1 < ButtonTexts.Count())
+            {
+                currentButtonText = ButtonTexts[currentIndex + 1];
+            }
+            else
+            {
+                currentButtonText = "Fully evolved!";
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Names != null && Names.Any() && ButtonTexts != null && ButtonTexts.Any())
+        {
+            currentName = Names[0];
+            currentButtonText = ButtonTexts[0];
+        }
+    }
+}
